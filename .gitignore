@@ -1,0 +1,5 @@
+sysroot/
+*.o
+*.out
+*.bin
+
