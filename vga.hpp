@@ -2,6 +2,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "format.hpp"
+
 class Spinlock {
 private:
 	bool locked = false;
@@ -15,40 +17,6 @@ public:
 		__atomic_clear(&locked, __ATOMIC_RELEASE);
 	}
 };
-
-class StringView {
-private:
-	const char* data_;
-	size_t length_;
-public:
-	template<size_t N>
-    constexpr StringView(const char(&str)[N]) : data_(str), length_(N-1) {}
-	constexpr StringView(const char* str, size_t len) : data_(str), length_(len) {}
-	char operator[](size_t index) const {
-		if(index >= length_) return ' ';
-		return data_[index];
-	}
-	size_t length() const { return length_; }
-	const char* data() const { return data_; }
-};
-
-
-template<size_t N>
-struct FormatString{
-	char data[N];
-	int placeholder_count = 0;
-	consteval FormatString(const char(&str)[N]) {
-		for(size_t i = 0; i < N; i++){
-			data[i] = str[i];
-			if (i < N-1 && str[i] == '{' && str[i+1] == '}'){
-				placeholder_count++;
-			}
-		}
-	}
-};
-
-
-
 
 /*
  * VGA Writer specific structures
@@ -173,8 +141,8 @@ namespace VGA{
 		uint8_t old_color = vga.get_color();
 		vga.set_color(color_code);
 		vga.print_fmt<fmt>(args...);
-		vga.print("\n");
 		vga.set_color(old_color);
+		vga.print("\n");
 		vga_lock.unlock();
 	}
 	void print(StringView str);

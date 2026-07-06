@@ -33,6 +33,9 @@ void VGAWriter::shift_up(){
 }
 void VGAWriter::write_char(char c, uint8_t color){
 	if(c == '\n'){
+		for(int i = col; i < maxcol; i++){
+			buffer[row * maxcol + i] = ((uint16_t)' ' | (uint16_t) this->color << 8);
+		}
 		row++;
 		col = 0;
 	} else {
