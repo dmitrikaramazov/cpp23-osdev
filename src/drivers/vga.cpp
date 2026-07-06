@@ -57,28 +57,6 @@ void VGAWriter::print(StringView str, uint8_t color){
 }
 
 
-void VGAWriter::print(int32_t number){
-	if(number == 0){
-		write_char('0');
-		return;
-	}
-	uint32_t u_num = static_cast<uint32_t>(number);
-	if(number < 0){
-		write_char('-');
-		// use uint instead of int to prevent int32_min overflow edge case
-		u_num = -u_num;
-	}
-	char buf[16];
-	int i = 0;
-	while(u_num > 0){
-		buf[i] = '0' + (u_num %10);
-		u_num = u_num / 10;
-		i++;
-	}
-	for(int j = i - 1; j >= 0; j--) {
-		write_char(buf[j]);
-	}
-}
 void VGAWriter::clear(){
 	for(int i = 0; i < maxrow; i++){
 		for(int j = 0; j < maxcol; j++){

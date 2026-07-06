@@ -42,7 +42,7 @@ namespace Fmt {
 	template<typename Driver>
 	void print(Driver& driver, int32_t number) {
 		if(number == 0){
-			driver.write_char(0);
+			driver.write_char('0');
 			return;
 		}
 		uint32_t u_num = static_cast<uint32_t>(number);
@@ -54,7 +54,7 @@ namespace Fmt {
 		int i = 0;
 		while(u_num > 0){
 			buf[i] = '0' + (u_num%10);
-			u_num /= u_num;
+			u_num /= 10;
 			i++;
 		}
 		for(int j = i-1; j >= 0; j--){
@@ -73,11 +73,19 @@ namespace Fmt {
 				} else {
 					Fmt::print(driver, remainder);
 				}
+				return;
 			}
 		}
 	}
 	template<typename Driver, FormatString fmt, typename... Args>
 	void print_fmt(Driver& driver, const Args&... args){
+		static_assert(fmt.placeholder_count == sizeof...(Args),
+				"Format Error:  Number of {} does not match arguments!");
+		StringView view(fmt.data, sizeof(fmt.data)-1);
+		if constexpr (sizeof...(Args) > 0){
+			unroll_format(driver,view,args...);
+		} else {
+			print(driver, view);
+		}
 	}
-	
 };
