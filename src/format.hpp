@@ -1,6 +1,11 @@
 #pragma once
-#include <cstddef>
-#include <cstdint>
+#include <stddef.h>
+#include <stdint.h>
+
+template<typename T>
+concept OutputDriver = requires(T driver, char c){
+	driver.write_char(c);
+};
 
 class StringView {
 private:
@@ -33,13 +38,15 @@ struct FormatString{
 };
 
 namespace Fmt {
-	template<typename Driver>
+//	template<typename Driver>
+	template<OutputDriver Driver>
 	void print(Driver& driver, StringView str){
 		for(size_t i = 0; i < str.length(); i++){
 			driver.write_char(str[i]);
 		}
 	}
-	template<typename Driver>
+//	template<typename Driver>
+	template<OutputDriver Driver>
 	void print(Driver& driver, int32_t number) {
 		if(number == 0){
 			driver.write_char('0');
@@ -77,7 +84,8 @@ namespace Fmt {
 			}
 		}
 	}
-	template<typename Driver, FormatString fmt, typename... Args>
+//	template<typename Driver, FormatString fmt, typename... Args>
+	template<OutputDriver Driver, FormatString fmt, typename... Args>
 	void print_fmt(Driver& driver, const Args&... args){
 		static_assert(fmt.placeholder_count == sizeof...(Args),
 				"Format Error:  Number of {} does not match arguments!");

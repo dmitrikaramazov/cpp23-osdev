@@ -1,0 +1,111 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "--target=i686-elf",
+      "-c",
+      "-o",
+      "build/boot.o",
+      "src/boot.s"
+    ],
+    "directory": "/home/lodestone/projects/agy/tmp",
+    "file": "/home/lodestone/projects/agy/tmp/src/boot.s",
+    "output": "/home/lodestone/projects/agy/tmp/build/boot.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++23",
+      "--target=i686-elf",
+      "-ffreestanding",
+      "-fno-exceptions",
+      "-fno-rtti",
+      "-I./include",
+      "-Wall",
+      "-Wextra",
+      "-ffunction-sections",
+      "-fdata-sections",
+      "-mgeneral-regs-only",
+      "-DKERNEL_TEST",
+      "-c",
+      "-o",
+      "build/vga.o",
+      "src/drivers/vga.cpp"
+    ],
+    "directory": "/home/lodestone/projects/agy/tmp",
+    "file": "/home/lodestone/projects/agy/tmp/src/drivers/vga.cpp",
+    "output": "/home/lodestone/projects/agy/tmp/build/vga.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++23",
+      "--target=i686-elf",
+      "-ffreestanding",
+      "-fno-exceptions",
+      "-fno-rtti",
+      "-I./include",
+      "-Wall",
+      "-Wextra",
+      "-ffunction-sections",
+      "-fdata-sections",
+      "-mgeneral-regs-only",
+      "-DKERNEL_TEST",
+      "-c",
+      "-o",
+      "build/serial.o",
+      "src/drivers/serial.cpp"
+    ],
+    "directory": "/home/lodestone/projects/agy/tmp",
+    "file": "/home/lodestone/projects/agy/tmp/src/drivers/serial.cpp",
+    "output": "/home/lodestone/projects/agy/tmp/build/serial.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++23",
+      "--target=i686-elf",
+      "-ffreestanding",
+      "-fno-exceptions",
+      "-fno-rtti",
+      "-I./include",
+      "-Wall",
+      "-Wextra",
+      "-ffunction-sections",
+      "-fdata-sections",
+      "-mgeneral-regs-only",
+      "-DKERNEL_TEST",
+      "-c",
+      "-o",
+      "build/exceptions.o",
+      "src/exceptions.cpp"
+    ],
+    "directory": "/home/lodestone/projects/agy/tmp",
+    "file": "/home/lodestone/projects/agy/tmp/src/exceptions.cpp",
+    "output": "/home/lodestone/projects/agy/tmp/build/exceptions.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++23",
+      "--target=i686-elf",
+      "-ffreestanding",
+      "-fno-exceptions",
+      "-fno-rtti",
+      "-I./include",
+      "-Wall",
+      "-Wextra",
+      "-ffunction-sections",
+      "-fdata-sections",
+      "-mgeneral-regs-only",
+      "-DKERNEL_TEST",
+      "-c",
+      "-o",
+      "build/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/lodestone/projects/agy/tmp",
+    "file": "/home/lodestone/projects/agy/tmp/src/main.cpp",
+    "output": "/home/lodestone/projects/agy/tmp/build/main.o"
+  }
+]

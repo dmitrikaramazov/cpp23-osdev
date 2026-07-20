@@ -74,6 +74,8 @@ uint8_t VGAWriter::get_color(){
 	return this->color;
 }
 
+
+
 namespace VGA{
 	Spinlock vga_lock;
 	VGAWriter vga;
@@ -104,6 +106,10 @@ namespace VGA{
 		vga_lock.lock();
 		vga.clear();
 		vga_lock.unlock();
+	}
+	void disable_cursor(){
+		Ports::outb(0x3D4, 0x0A);
+		Ports::outb(0x3D5, 0x20);
 	}
 }
 

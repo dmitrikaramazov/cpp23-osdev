@@ -1,7 +1,8 @@
 #pragma once
-#include <cstddef>
-#include <cstdint>
+#include <stddef.h>
+#include <stdint.h>
 
+#include "../ports.hpp"
 #include "../format.hpp"
 #include "../atomic.hpp"
 
@@ -109,7 +110,7 @@ namespace VGA{
 	void print(StringView str, uint8_t color);
 	void println(StringView str);
 	void println(StringView str, uint8_t color);
-
+	void disable_cursor();
 	void clear();
 }
 
