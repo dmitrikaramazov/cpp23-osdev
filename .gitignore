@@ -4,6 +4,5 @@ sysroot/
 *.bin
 
 .cache/
-build
-
-
+build/
+notes/
