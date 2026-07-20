@@ -3,3 +3,7 @@ sysroot/
 *.out
 *.bin
 
+.cache/
+build
+
+
