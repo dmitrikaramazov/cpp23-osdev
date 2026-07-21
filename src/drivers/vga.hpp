@@ -74,34 +74,38 @@ namespace VGA{
 	extern Spinlock vga_lock;
 	extern VGAWriter vga;
 
-	template<FormatString fmt, typename... Args>
-	void print_fmt(const Args&... args){
+	template< typename... Args>
+	void print_fmt(FormatString<type_identity_t<Args>...> fmt, const Args&... args){
 		vga_lock.lock();
-		Fmt::print_fmt<decltype(vga), fmt>(vga,args...);
+		//Fmt::print_fmt<decltype(vga), fmt>(vga,args...);
+		Fmt::print_fmt(vga,fmt,args...);
 		vga_lock.unlock();
 	}
-	template<FormatString fmt, typename... Args>
-	void print_fmt(ColorCode color_code, const Args&... args){
+	template<typename... Args>
+	void print_fmt(FormatString<type_identity_t<Args>...> fmt, ColorCode color_code, const Args&... args){
 		vga_lock.lock();
 		uint8_t old_color = vga.get_color();
 		vga.set_color(color_code);
-		Fmt::print_fmt<decltype(vga), fmt>(vga,args...);
+		//Fmt::print_fmt<decltype(vga), fmt>(vga,args...);
+		Fmt::print_fmt(vga,fmt,args...);
 		vga.set_color(old_color);
 		vga_lock.unlock();
 	}
-	template<FormatString fmt, typename... Args>
-	void println(const Args&... args){
+	template<typename... Args>
+	void println(FormatString<type_identity_t<Args>...> fmt, const Args&... args){
 		vga_lock.lock();
-		Fmt::print_fmt<decltype(vga), fmt>(vga,args...);
+		//Fmt::print_fmt<decltype(vga), fmt>(vga,args...);
+		Fmt::print_fmt(vga,fmt,args...);
 		vga.print("\n");
 		vga_lock.unlock();
 	}
-	template<FormatString fmt, typename... Args>
-	void println(ColorCode color_code, const Args&... args){
+	template<typename... Args>
+	void println(FormatString<type_identity_t<Args>...> fmt, ColorCode color_code, const Args&... args){
 		vga_lock.lock();
 		uint8_t old_color = vga.get_color();
 		vga.set_color(color_code);
-		Fmt::print_fmt<decltype(vga), fmt>(vga,args...);
+		//Fmt::print_fmt<decltype(vga), fmt>(vga,args...);
+		Fmt::print_fmt(vga,fmt,args...);
 		vga.set_color(old_color);
 		vga.print("\n");
 		vga_lock.unlock();

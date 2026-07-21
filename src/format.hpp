@@ -2,6 +2,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+template<typename T> struct type_identity { using type = T; };
+template<typename T> using type_identity_t = typename type_identity<T>::type;
+
 template<typename T>
 concept OutputDriver = requires(T driver, char c){
 	driver.write_char(c);
@@ -23,29 +26,35 @@ public:
 	const char* data() const { return data_; }
 };
 
-template<size_t N>
-struct FormatString{
-	char data[N];
-	int placeholder_count = 0;
-	consteval FormatString(const char(&str)[N]) {
-		for(size_t i = 0; i < N; i++){
-			data[i] = str[i];
-			if (i < N-1 && str[i] == '{' && str[i+1] == '}'){
+
+void jank_throw();
+template<typename... Args>
+struct FormatString {
+	StringView view;
+	template<size_t N>
+	consteval FormatString(const char(&str)[N]) : view(str, N-1) {
+		int placeholder_count = 0;
+		for(size_t i = 0; i < N -1; i++){
+			if(str[i] == '{' && str[i+1] == '}'){
 				placeholder_count++;
 			}
+		}
+		if(placeholder_count != sizeof...(Args)){
+			// only ever evaluated at compile time i think
+			jank_throw();
 		}
 	}
 };
 
 namespace Fmt {
-//	template<typename Driver>
+
 	template<OutputDriver Driver>
 	void print(Driver& driver, StringView str){
 		for(size_t i = 0; i < str.length(); i++){
 			driver.write_char(str[i]);
 		}
 	}
-//	template<typename Driver>
+
 	template<OutputDriver Driver>
 	void print(Driver& driver, int32_t number) {
 		if(number == 0){
@@ -68,6 +77,7 @@ namespace Fmt {
 			driver.write_char(buf[j]);
 		}
 	}
+
 	template<typename Driver, typename T, typename... Args>
 	void unroll_format(Driver& driver, StringView str, const T& value, const Args&... args) {
 		for(size_t i = 0; i < str.length(); i++){
@@ -84,16 +94,13 @@ namespace Fmt {
 			}
 		}
 	}
-//	template<typename Driver, FormatString fmt, typename... Args>
-	template<OutputDriver Driver, FormatString fmt, typename... Args>
-	void print_fmt(Driver& driver, const Args&... args){
-		static_assert(fmt.placeholder_count == sizeof...(Args),
-				"Format Error:  Number of {} does not match arguments!");
-		StringView view(fmt.data, sizeof(fmt.data)-1);
-		if constexpr (sizeof...(Args) > 0){
-			unroll_format(driver,view,args...);
+	
+	template<OutputDriver Driver,  typename... Args>
+	void print_fmt(Driver& driver,FormatString<Args...> fmt, const Args&... args){
+		if constexpr(sizeof...(Args) > 0){
+			unroll_format(driver,fmt.view,args...);
 		} else {
-			print(driver, view);
+			print(driver, fmt.view);
 		}
 	}
 };

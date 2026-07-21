@@ -33,11 +33,11 @@ inline void run_all_tests(){
 	TestCase* start = &tests_start;
 	TestCase* end   = &tests_end;
 	size_t count = end - start;
-	Log::println<"[*] Running {} tests">(count);
+	Log::println("[*] Running {} tests",count);
 	for(TestCase* test = start; test < end; test++){
 		(*test)();
 	}
-	Log::println<"[+] All tests passed!">();
+	Log::println("[+] All tests passed!");
 	//exit_qemu(QemuExitCode::Success);
 #endif
 }

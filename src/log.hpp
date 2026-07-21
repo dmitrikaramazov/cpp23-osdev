@@ -13,19 +13,19 @@ namespace Log {
 		VGA::println(str);
 		SERIAL::println(str);
 	}
-	template<FormatString fmt, typename... Args>
-	inline void print(const Args&... args) {
-		VGA::print_fmt<fmt>(args...);
-		SERIAL::print_fmt<fmt>(args...);
+	template<typename... Args>
+	inline void print(FormatString<type_identity_t<Args>...> fmt, const Args&... args) {
+		VGA::print_fmt(fmt,args...);
+		SERIAL::print_fmt(fmt,args...);
 	}
-	template<FormatString fmt, typename... Args>
-	inline void println(const Args&... args) {
-		VGA::println<fmt>(args...);
-		SERIAL::println<fmt>(args...);
+	template<typename... Args>
+	inline void println(FormatString<type_identity_t<Args>...> fmt, const Args&... args) {
+		VGA::println(fmt,args...);
+		SERIAL::println(fmt,args...);
 	}
-	template<FormatString fmt, typename... Args>
-	inline void print_colored(ColorCode color, const Args&... args) {
-		VGA::print_fmt<fmt>(color, args...);
-		SERIAL::print_fmt<fmt>(args...);
+	template<typename... Args>
+	inline void print_colored(FormatString<type_identity_t<Args>...> fmt, ColorCode color, const Args&... args) {
+		VGA::print_fmt(color, fmt, args...);
+		SERIAL::print_fmt(fmt,args...);
 	}
 }
